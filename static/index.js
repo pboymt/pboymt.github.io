@@ -22,6 +22,7 @@ $(() => {
     console.log('?');
     $.getJSON('./data/data.json', (body) => {
         console.log(body);
+        $('#last-update').text(formatTime(body.info.lastUpdate));
         const list = body.list.sort((a, b) => {
             return a.addtime - b.addtime;
         });

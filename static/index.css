@@ -23,7 +23,11 @@ header {
   background-color: #00a1d6;
   line-height: 3rem;
   font-size: 2rem;
-  color: #FFF; }
+  color: #FFF;
+  padding: 0 2rem; }
+  header .last-up {
+    font-size: 1.25rem;
+    color: #CCC; }
 
 footer {
   position: fixed;
