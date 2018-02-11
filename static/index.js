@@ -23,11 +23,12 @@ $(() => {
     $.getJSON('./data/data.json', (body) => {
         console.log(body);
         const list = body.list.sort((a, b) => {
-            return a.mid - b.mid;
+            return a.addtime - b.addtime;
         });
         $('#list').children().remove();
         for (let item of list) {
             const tr = $('<tr>');
+            tr.append($('<td>').text(formatTime(item.addtime)));
             tr.append($('<td>').text(item.mid));
             tr.append($('<td>').text(item.username));
             tr.append($('<td>').text(formatTime(item.regtime)));

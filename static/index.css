@@ -10,7 +10,7 @@ body {
     align-items: center; }
     body article table thead {
       background-color: #68d9ff; }
-      body article table thead tr td {
+      body article table thead tr th {
         padding: 0 .5rem; }
     body article table tbody tr td {
       padding: 0 .5rem; }
@@ -30,4 +30,12 @@ footer {
   bottom: 0;
   width: 100%;
   height: 3rem;
-  background-color: rgba(0, 0, 0, 0.2); }
+  background-color: rgba(0, 0, 0, 0.3);
+  line-height: 3rem;
+  font-size: 1.2rem;
+  color: aqua;
+  padding: 0 2rem; }
+  footer a {
+    color: #FFF;
+    text-decoration: none;
+    text-decoration-style: none; }
