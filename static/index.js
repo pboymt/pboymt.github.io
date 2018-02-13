@@ -20,7 +20,7 @@ function formatTime(time = 0) {
 }
 $(() => {
     console.log('?');
-    $.getJSON('./data/data.json', (body) => {
+    $.getJSON('./data/data.json?time=' + Date.now(), (body) => {
         console.log(body);
         $('#last-update').text(formatTime(body.info.lastUpdate));
         const list = body.list.sort((a, b) => {
