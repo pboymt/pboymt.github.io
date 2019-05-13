@@ -1,0 +1,275 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "title": "Scriptron Project Schema Version 0",
+  "description": "Scriptron运行项目配置文件",
+  "type": "object",
+  "required": [
+    "name",
+    "version",
+    "entries",
+    "compile"
+  ],
+  "properties": {
+    "$schema": {
+      "description": "The URI of the JSON schema corresponding to the version.",
+      "type": "string"
+    },
+    "name": {
+      "type": "string",
+      "title": "项目名称"
+    },
+    "version": {
+      "type": "string",
+      "title": "项目版本名称",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(-(beta|alpha)\\.[0-9]{1,3})?$"
+    },
+    "engine": {
+      "type": "number",
+      "minimum": 0,
+      "default": 0
+    },
+    "compile": {
+      "type": "boolean",
+      "default": false
+    },
+    "assets": {
+      "type": "object",
+      "title": "项目附件内容",
+      "additionalProperties": false,
+      "properties": {
+        "templates": {
+          "type": "array",
+          "title": "识图模板",
+          "description": "识图模板存放目录，使用项目根目录的相对目录表示图片位置",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(-[a-z0-9])*\\.(jpg|jpeg|png|webp)$"
+          }
+        }
+      }
+    },
+    "source": {
+      "type": "object",
+      "title": "源代码设置",
+      "description": "当源代码并非JavaScript或者JavaScript语言版本大于引擎支持的版本的时候，脚本的源代码可以存放在src目录中等待编译。",
+      "properties": {
+        "language": {
+          "title": "源代码语言类型",
+          "description": "支持javascript、typescript、coffeescript",
+          "type": "string",
+          "enum": [
+            "javascript",
+            "typescript",
+            "coffeescript"
+          ]
+        },
+        "entries": {
+          "type": "object",
+          "additionalProperties": false,
+          "patternProperties": {
+            "[a-z][a-z0-9]+": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "entry": {
+                  "type": "string"
+                },
+                "endpoint": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "entry",
+                "endpoint"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "entries": {
+      "type": "object",
+      "title": "脚本入口文件",
+      "description": "脚本入口文件为单文件，若要使用多文件，请将代码放入src目录之后编译运行",
+      "additionalProperties": false,
+      "patternProperties": {
+        "^[a-z][a-z0-9]+$": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "label": {
+              "type": "string",
+              "minLength": 1
+            },
+            "entry": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9]*\\.js$"
+            },
+            "options": {
+              "type": "object",
+              "title": "脚本运行选项",
+              "additionalProperties": false,
+              "patternProperties": {
+                "^[a-z]+(-[a-z]+)*$": {
+                  "type": "object",
+                  "required": [
+                    "type",
+                    "default",
+                    "title"
+                  ],
+                  "properties": {
+                    "type": {
+                      "description": "设置项数据类型",
+                      "enum": [
+                        "string",
+                        "number",
+                        "boolean",
+                        "enum"
+                      ]
+                    },
+                    "title": {
+                      "title": "设置项名称",
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "tip": {
+                      "title": "设置项简单说明",
+                      "type": "string"
+                    }
+                  },
+                  "allOf": [
+                    {
+                      "if": {
+                        "properties": {
+                          "type": {
+                            "const": "boolean"
+                          }
+                        }
+                      },
+                      "then": {
+                        "required": [
+                          "switch"
+                        ],
+                        "properties": {
+                          "type": {
+                            "type": "string"
+                          },
+                          "default": {
+                            "type": "boolean"
+                          },
+                          "switch": {
+                            "type": "array",
+                            "maxLength": 2,
+                            "minLength": 2,
+                            "uniqueItems": true,
+                            "items": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "if": {
+                        "properties": {
+                          "type": {
+                            "const": "number"
+                          }
+                        }
+                      },
+                      "then": {
+                        "properties": {
+                          "type": {
+                            "type": "string"
+                          },
+                          "default": {
+                            "type": "number"
+                          },
+                          "step": {
+                            "type": "number",
+                            "minimum": 1,
+                            "default": 1
+                          },
+                          "min": {
+                            "type": "number"
+                          },
+                          "max": {
+                            "type": "number"
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "if": {
+                        "properties": {
+                          "type": {
+                            "const": "string"
+                          }
+                        }
+                      },
+                      "then": {
+                        "properties": {
+                          "type": {
+                            "type": "string"
+                          },
+                          "default": {
+                            "type": "string"
+                          },
+                          "pattern": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "if": {
+                        "properties": {
+                          "type": {
+                            "const": "enum"
+                          }
+                        }
+                      },
+                      "then": {
+                        "properties": {
+                          "type": {
+                            "description": "值类型为string",
+                            "type": "string"
+                          },
+                          "default": {
+                            "type": "string"
+                          },
+                          "enum": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "uniqueItems": true,
+                            "minItems": 1
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {},
+  "if": {
+    "properties": {
+      "compile": {
+        "const": true
+      }
+    }
+  },
+  "then": {
+    "required": [
+      "source"
+    ]
+  }
+}
