@@ -97,10 +97,18 @@
         "^[a-z][a-z0-9]+$": {
           "type": "object",
           "additionalProperties": false,
+          "required": [
+            "label",
+            "entry",
+            "options"
+          ],
           "properties": {
             "label": {
               "type": "string",
               "minLength": 1
+            },
+            "help": {
+              "type": "string"
             },
             "entry": {
               "type": "string",
