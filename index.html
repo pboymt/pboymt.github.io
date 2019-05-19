@@ -12,6 +12,7 @@
 <body>
     <header>
         <div class="title">Scriptron</div>
+        <div class="link">最新版本：<span id="lver">检查中...</span></div>
         <div class="link">
             <a href="https://github.com/pboymt/pboymt.github.io/releases/latest">下载</a>
         </div>
@@ -40,5 +41,16 @@
         <script>document.write(new Date().getFullYear())</script> pboymt
     </footer>
 </body>
+<script>
+    fetch('/data.blacklist.json').then((res) => {
+        if (res.status === 200) {
+            return res.json();
+        }
+    }).then(({ list }) => {
+        document.getElementById('lver').textContent = list.pop();
+    }).catch(() => {
+        document.getElementById('lver').textContent = '检查错误';
+    });
+</script>
 
 </html>
