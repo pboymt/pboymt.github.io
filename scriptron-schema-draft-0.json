@@ -46,13 +46,21 @@
       "additionalProperties": false,
       "properties": {
         "templates": {
-          "type": "array",
+          "type": "object",
           "title": "识图模板",
           "description": "识图模板存放目录，使用项目根目录的相对目录表示图片位置",
-          "minItems": 1,
-          "items": {
-            "type": "string",
-            "pattern": "^[a-z0-9]+(-[a-z0-9])*\\.(jpg|jpeg|png|webp)$"
+          "patternProperties": {
+            "^[a-z][a-z0-9]*(-[a-z0-9])*": {
+              "required": [
+                "filename"
+              ],
+              "properties": {
+                "filename": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9]+(-[a-z0-9])*\\.(jpg|jpeg|png|webp)$"
+                }
+              }
+            }
           }
         }
       }
@@ -107,8 +115,7 @@
           "additionalProperties": false,
           "required": [
             "label",
-            "entry",
-            "options"
+            "entry"
           ],
           "properties": {
             "label": {
@@ -117,6 +124,17 @@
             },
             "help": {
               "type": "string"
+            },
+            "use": {
+              "type": "object",
+              "properties": {
+                "templates": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
             },
             "entry": {
               "type": "string",
