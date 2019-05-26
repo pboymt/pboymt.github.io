@@ -57,7 +57,7 @@
               "properties": {
                 "filename": {
                   "type": "string",
-                  "pattern": "^[a-z0-9]+(-[a-z0-9])*\\.(jpg|jpeg|png|webp)$"
+                  "pattern": "^[a-z0-9]+(-[a-z0-9]+)*\\.(jpg|jpeg|png|webp)$"
                 }
               }
             }
